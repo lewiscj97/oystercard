@@ -11,9 +11,18 @@ class Oystercard
         @balance += value
     end
 
+    def deduct(value)
+      raise "Insufficient funds on Oystercard" if insufficient_funds?(value)
+      @balance -= value
+    end
+
     private
 
     def is_over_limit?(value)
         @balance + value > LIMIT
+    end
+
+    def insufficient_funds?(value)
+      @balance - value < 0
     end
 end
