@@ -37,4 +37,19 @@ describe Oystercard do
       expect(subject.in_journey?).to eq false
     end
   end
+
+  describe "#touch_in" do
+    it "sets the card status to active" do
+      subject.touch_in
+      expect(subject.in_journey?).to eq true  
+    end
+  end
+
+  describe "#touch_out" do
+    it "sets the card status to inactive" do
+      subject.touch_in
+      subject.touch_out
+      expect(subject.in_journey?).to eq false
+    end
+  end
 end

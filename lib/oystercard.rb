@@ -22,6 +22,14 @@ class Oystercard
       @active
     end
 
+    def touch_in
+      @active = true
+    end
+
+    def touch_out
+      @active = false
+    end
+
     private
 
     def is_over_limit?(value)
