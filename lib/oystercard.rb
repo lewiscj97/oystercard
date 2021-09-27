@@ -25,8 +25,9 @@ class Oystercard
       @entry_station = entry_station
     end
 
-    def touch_out
+    def touch_out(exit_station)
       deduct
+      record_journey(exit_station)
       @entry_station = nil
     end
 
@@ -42,5 +43,9 @@ class Oystercard
 
     def deduct
       @balance -= LOWER_LIMIT
+    end
+
+    def record_journey(exit_station)
+      @journeys.push( {entry: @entry_station, exit: exit_station} )
     end
 end

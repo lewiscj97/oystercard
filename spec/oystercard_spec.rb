@@ -47,21 +47,21 @@ describe Oystercard do
     it "sets the card status to inactive" do
       subject.top_up(5)
       subject.touch_in("Lea Green")
-      subject.touch_out
+      subject.touch_out("Wavertree")
       expect(subject.in_journey?).to eq false
     end
 
     it "Will deduce the minimum fare when touched out" do
       subject.top_up(5)
       subject.touch_in("Lea Green")
-      expect {subject.touch_out}.to change{subject.balance}.by(-1)
+      expect {subject.touch_out("Wavertree")}.to change{subject.balance}.by(-1)
     end
 
     it "will add a complete journey to list of journeys" do
       subject.top_up(5)
       subject.touch_in("Lea Green")
       subject.touch_out("Wavertree")
-      expect(subject.journeys).to include {entry: "Lea Green", exit: "Wavertree"}
+      expect(subject.journeys).to include ({entry: "Lea Green", exit: "Wavertree"})
     end
   end
 
