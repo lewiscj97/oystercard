@@ -38,10 +38,11 @@ GEM
 
 PLATFORMS
   arm64-darwin-20
+  x86_64-darwin-17
 
 DEPENDENCIES
   rspec
   rubocop (= 1.20)
 
 BUNDLED WITH
-   2.2.27
+   2.2.28
