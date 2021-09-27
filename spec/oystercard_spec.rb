@@ -31,4 +31,10 @@ describe Oystercard do
       expect { subject.deduct(5) }.to raise_error "Insufficient funds on Oystercard"
     end
   end
+
+  describe "#in_journey?" do
+    it "returns false on initialisation" do
+      expect(subject.in_journey?).to eq false
+    end
+  end
 end
