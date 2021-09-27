@@ -57,4 +57,10 @@ describe Oystercard do
       expect {subject.touch_out}.to change{subject.balance}.by(-1)
     end
   end
+
+  describe "#journeys" do
+    it "has no journeys by default" do
+      expect(subject.journeys).to eq []
+    end
+  end
 end
