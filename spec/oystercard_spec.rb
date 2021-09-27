@@ -43,6 +43,10 @@ describe Oystercard do
       subject.touch_in
       expect(subject.in_journey?).to eq true  
     end
+
+    it "doesn't let user touch in if balance is below £1" do
+      
+    end
   end
 
   describe "#touch_out" do
