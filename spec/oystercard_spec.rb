@@ -19,19 +19,6 @@ describe Oystercard do
     end
   end
 
-  describe "#deduct" do
-    it "deducts a specified amount from the card balance" do
-      subject.top_up(10)
-      subject.deduct(5)
-
-      expect(subject.balance).to eq 5
-    end
-
-    it "doesn't let the balance get below £0" do
-      expect { subject.deduct(5) }.to raise_error "Insufficient funds on Oystercard"
-    end
-  end
-
   describe "#in_journey?" do
     it "returns false on initialisation" do
       expect(subject.in_journey?).to eq false
@@ -40,20 +27,34 @@ describe Oystercard do
 
   describe "#touch_in" do
     it "sets the card status to active" do
+      subject.top_up(5)
       subject.touch_in
       expect(subject.in_journey?).to eq true  
     end
 
     it "doesn't let user touch in if balance is below £1" do
-      
+      expect { subject.touch_in }.to raise_error "Must have minimum of £1 on card to travel"
+    end
+
+    it "will remember the starting station" do
+      subject.top_up(5)
+      subject.touch_in("Lea Green")
+      expect(subject.entry_station).to eq ("Lea Green")
     end
   end
 
   describe "#touch_out" do
     it "sets the card status to inactive" do
+      subject.top_up(5)
       subject.touch_in
       subject.touch_out
       expect(subject.in_journey?).to eq false
+    end
+
+    it "Will deduce the minimum fare when touched out" do
+      subject.top_up(5)
+      subject.touch_in
+      expect {subject.touch_out}.to change{subject.balance}.by(-1)
     end
   end
 end
