@@ -28,12 +28,12 @@ describe Oystercard do
   describe "#touch_in" do
     it "sets the card status to active" do
       subject.top_up(5)
-      subject.touch_in
+      subject.touch_in("Lea Green")
       expect(subject.in_journey?).to eq true  
     end
 
     it "doesn't let user touch in if balance is below £1" do
-      expect { subject.touch_in }.to raise_error "Must have minimum of £1 on card to travel"
+      expect { subject.touch_in("Lea Green") }.to raise_error "Must have minimum of £1 on card to travel"
     end
 
     it "will remember the starting station" do
@@ -46,14 +46,14 @@ describe Oystercard do
   describe "#touch_out" do
     it "sets the card status to inactive" do
       subject.top_up(5)
-      subject.touch_in
+      subject.touch_in("Lea Green")
       subject.touch_out
       expect(subject.in_journey?).to eq false
     end
 
     it "Will deduce the minimum fare when touched out" do
       subject.top_up(5)
-      subject.touch_in
+      subject.touch_in("Lea Green")
       expect {subject.touch_out}.to change{subject.balance}.by(-1)
     end
   end

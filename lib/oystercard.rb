@@ -1,5 +1,6 @@
 class Oystercard
     attr_reader :balance
+    attr_reader :entry_station
 
     UPPER_LIMIT = 90
     LOWER_LIMIT = 1
@@ -18,13 +19,15 @@ class Oystercard
       @active
     end
 
-    def touch_in
+    def touch_in(entry_station)
       raise "Must have minimum of £#{LOWER_LIMIT} on card to travel" if insufficient_funds?
+      @entry_station = entry_station
       @active = true
     end
 
     def touch_out
       @active = false
+      @entry_station = nil
       deduct
     end
 
