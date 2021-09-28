@@ -4,7 +4,7 @@ class Journey
 
     attr_reader :entry_station
     attr_reader :exit_station
-    attr_reader :complete
+    attr_accessor :complete
     attr_reader :fare
 
     def initialize()
@@ -20,7 +20,7 @@ class Journey
 
     def touch_out(exit_station)
         @exit_station = exit_station
-        @complete = true
+        @complete = true if !@entry_station.nil?
     end
 
     def penalty
