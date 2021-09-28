@@ -64,13 +64,13 @@ describe Oystercard do
       subject.top_up(5)
       subject.touch_in(lea_green)
       subject.touch_out(wavertree)
-      expect(subject.journeys).to include ({entry: lea_green, exit: wavertree})
+      expect(subject.journey_list).to include ({entry: lea_green, exit: wavertree})
     end
   end
 
   describe "#journeys" do
     it "has no journeys by default" do
-      expect(subject.journeys).to eq []
+      expect(subject.journey_list).to eq []
     end
   end
 end

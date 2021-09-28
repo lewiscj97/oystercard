@@ -22,21 +22,34 @@ class Oystercard
 
     def touch_in(entry_station)
       raise "Must have minimum of £#{LOWER_LIMIT} on card to travel" if insufficient_funds?
+
       if @journey.nil?
         @journey = Journey.new
         @journey.touch_in(entry_station)
+      
       else
-        @balance -= @journey.penalty
-        @journey_list.push( {entry: @journey.entry_station, exit: "did not tap out"} )
+        @journey.penalty
+        @journey_list.push( @journey )
+        @balance -= @journey.fare
         @journey = Journey.new
         @journey.touch_in(entry_station)
       end
     end
 
     def touch_out(exit_station)
-      deduct
-      record_journey(exit_station)
-      @entry_station = nil
+      # good
+      if !@journey.complete
+        @journey.touch_out(exit_station)
+        @balance -= @journey.fare
+        @journey_list.push( {entry: @journey.entry_station, exit: @journey.exit_station} )
+      # penalty
+      else
+        @journey = Journey.new
+        @balance -= @journey.penalty
+        @journey.touch_out(exit_station)
+        @journey_list.push( {entry: "did not tap in", exit: @journey.exit_station} )
+      end
+      @journey = nil
     end
 
     private
