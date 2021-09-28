@@ -1,7 +1,10 @@
+require 'journey'
+
 class Oystercard
     attr_reader :balance
     attr_reader :entry_station
     attr_reader :journey_list
+    attr_reader :journey
 
     UPPER_LIMIT = 90
     LOWER_LIMIT = 1
@@ -17,7 +20,7 @@ class Oystercard
     end
 
     def in_journey?
-      !@entry_station.nil?
+      !@journey.complete
     end
 
     def touch_in(entry_station)
@@ -30,24 +33,23 @@ class Oystercard
       else
         @journey.penalty
         @journey_list.push( @journey )
-        @balance -= @journey.fare
+        deduct
         @journey = Journey.new
         @journey.touch_in(entry_station)
       end
     end
 
     def touch_out(exit_station)
-      # good
       if !@journey.complete
         @journey.touch_out(exit_station)
-        @balance -= @journey.fare
-        @journey_list.push( {entry: @journey.entry_station, exit: @journey.exit_station} )
-      # penalty
+        @journey_list.push( @journey )
+        deduct
       else
         @journey = Journey.new
-        @balance -= @journey.penalty
         @journey.touch_out(exit_station)
-        @journey_list.push( {entry: "did not tap in", exit: @journey.exit_station} )
+        @journey.penalty
+        @journey_list.push( @journey )
+        deduct
       end
       @journey = nil
     end
@@ -63,7 +65,7 @@ class Oystercard
     end
 
     def deduct
-      @balance -= LOWER_LIMIT
+      @balance -= @journey.fare
     end
 
     def record_journey(exit_station)

@@ -1,7 +1,7 @@
 require 'oystercard'
 
 describe Oystercard do
-
+  let(:journey) {double :journey, entry_station: lea_green, exit_station: wavertree, fare: 1}
   let(:lea_green) {double :station}
   let(:wavertree) {double :station}
 
@@ -22,12 +22,6 @@ describe Oystercard do
     end
   end
 
-  describe "#in_journey?" do
-    it "returns false on initialisation" do
-      expect(subject.in_journey?).to eq false
-    end
-  end
-
   describe "#touch_in" do
     it "sets the card status to active" do
       subject.top_up(5)
@@ -42,17 +36,11 @@ describe Oystercard do
     it "will remember the starting station" do
       subject.top_up(5)
       subject.touch_in(lea_green)
-      expect(subject.entry_station).to eq (lea_green)
+      expect(subject.journey.entry_station).to eq (lea_green)
     end
   end
 
   describe "#touch_out" do
-    it "sets the card status to inactive" do
-      subject.top_up(5)
-      subject.touch_in(lea_green)
-      subject.touch_out(wavertree)
-      expect(subject.in_journey?).to eq false
-    end
 
     it "Will deduce the minimum fare when touched out" do
       subject.top_up(5)
@@ -64,7 +52,8 @@ describe Oystercard do
       subject.top_up(5)
       subject.touch_in(lea_green)
       subject.touch_out(wavertree)
-      expect(subject.journey_list).to include ({entry: lea_green, exit: wavertree})
+      expect(subject.journey_list[0].entry_station).to eq ( lea_green )
+      expect(subject.journey_list[0].exit_station).to eq ( wavertree )
     end
   end
 
