@@ -32,17 +32,10 @@ describe Oystercard do
     it "doesn't let user touch in if balance is below £1" do
       expect { subject.touch_in(lea_green) }.to raise_error "Must have minimum of £1 on card to travel"
     end
-
-    it "will remember the starting station" do
-      subject.top_up(5)
-      subject.touch_in(lea_green)
-      expect(subject.journey.entry_station).to eq (lea_green)
-    end
   end
 
   describe "#touch_out" do
-
-    it "Will deduce the minimum fare when touched out" do
+    it "Will deduct the minimum fare when touched out" do
       subject.top_up(5)
       subject.touch_in(lea_green)
       expect {subject.touch_out(wavertree)}.to change{subject.balance}.by(-1)
@@ -57,7 +50,7 @@ describe Oystercard do
     end
   end
 
-  describe "#journeys" do
+  describe "#journey_list" do
     it "has no journeys by default" do
       expect(subject.journey_list).to eq []
     end
