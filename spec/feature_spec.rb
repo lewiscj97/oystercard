@@ -39,9 +39,9 @@ describe Oystercard do
 
       expect(subject.journey_log.journeys[0].entry_station).to eq @wavertree
       expect(subject.journey_log.journeys[0].exit_station).to eq nil
-      expect(subject.journey_log.journeys[0].complete).to eq false
+      # expect(subject.journey_log.journeys[0].complete).to eq false
       expect(subject.balance).to eq 4
-      expect(subject.journey.entry_station).to eq @lea_green
+      expect(subject.journey_log.current_journey.entry_station).to eq @lea_green
     end
   end
 end
