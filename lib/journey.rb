@@ -26,4 +26,8 @@ class Journey
     def penalty
         @fare = PENALTY_FARE
     end
+
+    def calculate_fare
+        @fare += (@entry_station.zone - @exit_station.zone).abs
+    end
 end
