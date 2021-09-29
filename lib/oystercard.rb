@@ -27,12 +27,12 @@ class Oystercard
 
     def touch_in(entry_station)
       raise "Must have minimum of £#{LOWER_LIMIT} on card to travel" if insufficient_funds?
-      not_tapping_out if @journey_log.current_journey.nil?
+      not_tapping_out if @journey_log.current_journey
       @journey_log.start(entry_station)
     end
 
     def touch_out(exit_station)
-      # not_tapping_in if !@journey_log.current_journey.nil?
+      not_tapping_in if @journey_log.current_journey.nil?
       end_journey(exit_station)
     end
 
