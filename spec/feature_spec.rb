@@ -17,7 +17,6 @@ describe Oystercard do
       expect(subject.journey_log.journeys[0].exit_station).to eq @wavertree
       expect(subject.journey_log.journeys[0].complete).to eq true
       expect(subject.balance).to eq 9
-      expect(subject.journey).to eq nil
     end
   end
 

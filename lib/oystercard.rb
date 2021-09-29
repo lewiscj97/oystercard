@@ -2,10 +2,7 @@ require_relative 'journey'
 require_relative 'journey_log'
 
 class Oystercard
-    attr_reader :balance
-    attr_reader :entry_station
-    attr_reader :journey_log
-    attr_reader :journey
+    attr_reader :balance, :journey_log
 
     UPPER_LIMIT = 90
     LOWER_LIMIT = 1
@@ -45,11 +42,7 @@ class Oystercard
     def insufficient_funds?
       @balance < LOWER_LIMIT
     end
-
-    # def deduct
-    #   @balance -= @journey_log.current_journey.fare
-    # end
-
+    
     def end_journey(exit_station)
       @balance -= @journey_log.finish(exit_station)
     end
