@@ -6,17 +6,20 @@ describe Oystercard do
   let(:wavertree) {double :station}
   let(:journey_double) {double :journey }
   let(:journey_class) {double :journey_class, new: journey_double}
+  let(:journey_log) {double :journey_log, "[]": journey}
 
-  
   before(:each) do
-    @subject = Oystercard.new(journey_class)
+    @subject = Oystercard.new(journey_class, journey_log)
     allow(journey_double).to receive(:touch_in)
     allow(journey_double).to receive(:touch_out)
     allow(journey_double).to receive(:entry_station) { lea_green }
     allow(journey_double).to receive(:exit_station) { wavertree }
-    
     allow(journey_double).to receive(:fare) { 1 }
     allow(journey_double).to receive(:complete)
+
+    allow(journey_log).to receive(:current_journey) {journey}
+    allow(journey_log).to receive(:start)
+    allow(journey_log).to receive(:finish)
   end
 
   describe "#initialize" do 
@@ -60,14 +63,15 @@ describe Oystercard do
       @subject.touch_in(lea_green)
       @subject.touch_out(wavertree)
 
-      expect(@subject.journey_list[0].entry_station).to eq ( lea_green )
-      expect(@subject.journey_list[0].exit_station).to eq ( wavertree )
+      expect(@subject.journey_log[0].entry_station).to eq ( lea_green )
+      expect(@subject.journey_log[0].exit_station).to eq ( wavertree )
     end
   end
 
   describe "#journey_list" do
     it "has no journeys by default" do
-      expect(@subject.journey_list).to eq []
+      allow(journey_log).to receive(:journeys) {[]}
+      expect(@subject.journey_log.journeys).to eq []
     end
   end
 end

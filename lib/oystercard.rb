@@ -1,9 +1,10 @@
 require_relative 'journey'
+require_relative 'journey_log'
 
 class Oystercard
     attr_reader :balance
     attr_reader :entry_station
-    attr_reader :journey_list
+    attr_reader :journey_log
     attr_reader :journey
 
     UPPER_LIMIT = 90
@@ -11,7 +12,7 @@ class Oystercard
 
     def initialize(journey = Journey, journey_log = JourneyLog.new) 
         @balance = 0
-        @journey_log = journey_class
+        @journey_log = journey_log
         @journey_class = journey
     end
 
@@ -26,12 +27,12 @@ class Oystercard
 
     def touch_in(entry_station)
       raise "Must have minimum of £#{LOWER_LIMIT} on card to travel" if insufficient_funds?
-      not_tapping_out if !@journey_log.current_journey.nil?
-      @journey_log.start_journey(entry_station)
+      not_tapping_out if @journey_log.current_journey.nil?
+      @journey_log.start(entry_station)
     end
 
     def touch_out(exit_station)
-      not_tapping_in if @journey_log.current_journey.nil?
+      # not_tapping_in if !@journey_log.current_journey.nil?
       end_journey(exit_station)
     end
 

@@ -28,7 +28,7 @@ describe JourneyLog do
         it "adds an exit station to the current journey" do
             @subject.start(lea_green)
             @subject.finish(wavertree)
-            expect(@subject.current_journey.exit_station).to eq wavertree
+            expect(@subject.journeys[0].exit_station).to eq wavertree
         end
     end
 
