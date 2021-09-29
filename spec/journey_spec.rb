@@ -34,30 +34,23 @@ describe Journey do
       end
     end
 
-    describe "#penalty" do
-      it "sets the fare to the penalty fare" do
-        subject.penalty
-        expect(subject.fare).to eq 6
-      end
-    end
-
-    describe "#calculate_fare" do
+    describe "#fare" do
       it "returns 1 when the journey is within the same zone" do
         subject.touch_in(lea_green)
         subject.touch_out(wavertree)
-        expect(subject.calculate_fare).to eq 1
+        expect(subject.fare).to eq 1
       end
 
       it "returns 2 when the journey is made between zones 1 and 2" do
         subject.touch_in(lea_green)
         subject.touch_out(huyton)
-        expect(subject.calculate_fare).to eq 2
+        expect(subject.fare).to eq 2
       end
 
       it "returns 2 when the journey is made between zones 3 and 5" do
         subject.touch_in(roby)
         subject.touch_out(ecclestone_park)
-        expect(subject.calculate_fare).to eq 3
+        expect(subject.fare).to eq 3
       end
     end
 end

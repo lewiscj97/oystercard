@@ -46,22 +46,19 @@ class Oystercard
       @balance < LOWER_LIMIT
     end
 
-    def deduct
-      @balance -= @journey_log.current_journey.fare
-    end
+    # def deduct
+    #   @balance -= @journey_log.current_journey.fare
+    # end
 
     def end_journey(exit_station)
-      deduct
-      @journey_log.finish(exit_station)
+      @balance -= @journey_log.finish(exit_station)
     end
 
     def not_tapping_out
-      @journey_log.current_journey.penalty
       end_journey(nil)
     end
     
     def not_tapping_in
       @journey_log.start(nil)
-      @journey_log.current_journey.penalty
     end
 end

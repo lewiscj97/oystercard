@@ -49,6 +49,7 @@ describe Oystercard do
       @subject.top_up(5)
       @subject.touch_in(lea_green)
       allow(journey_log).to receive(:current_journey) {journey}
+      allow(journey_log).to receive(:finish) {1}
       expect { @subject.touch_out(wavertree) }.to change{@subject.balance}.by(-1)
     end
 
@@ -57,6 +58,7 @@ describe Oystercard do
       @subject.top_up(5)
       @subject.touch_in(lea_green)
       allow(journey_log).to receive(:current_journey) {journey}
+      allow(journey_log).to receive(:finish) {1}
       @subject.touch_out(wavertree)
       expect(@subject.journey_log[0].entry_station).to eq ( lea_green )
       expect(@subject.journey_log[0].exit_station).to eq ( wavertree )

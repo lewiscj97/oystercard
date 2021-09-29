@@ -16,8 +16,10 @@ class JourneyLog
 
     def finish(exit_station)
         @current_journey.touch_out(exit_station)
+        fare = @current_journey.fare
         @journeys << @current_journey
         @current_journey = nil
+        return fare
     end
 
     def journeys

@@ -5,7 +5,7 @@ describe JourneyLog do
     let(:journey) {double :journey, entry_station: lea_green, exit_station: wavertree, fare: 1}
     let(:lea_green) {double :station}
     let(:wavertree) {double :station}
-    let(:journey_double) {double :journey }
+    let(:journey_double) {double :journey, fare: 1 }
   let(:journey_class) {double :journey_class, new: journey_double}
 
     before(:each) do
