@@ -9,9 +9,9 @@ class Oystercard
     UPPER_LIMIT = 90
     LOWER_LIMIT = 1
 
-    def initialize(journey = Journey) 
+    def initialize(journey = Journey, journey_log = JourneyLog.new) 
         @balance = 0
-        @journey_list = []
+        @journey_log = journey_class
         @journey_class = journey
     end
 
@@ -21,19 +21,18 @@ class Oystercard
     end
 
     def in_journey?
-      !@journey.complete
+      !@journey_log.current_journey.nil?
     end
 
     def touch_in(entry_station)
       raise "Must have minimum of £#{LOWER_LIMIT} on card to travel" if insufficient_funds?
-      not_tapping_out if !@journey.nil?
-      start_journey(entry_station)
+      not_tapping_out if !@journey_log.current_journey.nil?
+      @journey_log.start_journey(entry_station)
     end
 
     def touch_out(exit_station)
-      not_tapping_in if @journey.nil?
+      not_tapping_in if @journey_log.current_journey.nil?
       end_journey(exit_station)
-      @journey = nil
     end
 
     private
@@ -47,32 +46,21 @@ class Oystercard
     end
 
     def deduct
-      @balance -= @journey.fare
-    end
-
-    def record_journey(exit_station)
-      @journey_list.push( {entry: @entry_station, exit: exit_station} )
-    end
-
-    def start_journey(entry_station)
-      @journey = @journey_class.new
-      @journey.touch_in(entry_station)
+      @balance -= @journey_log.current_journey.fare
     end
 
     def end_journey(exit_station)
-      @journey.touch_out(exit_station)
-      @journey_list.push( @journey )
       deduct
+      @journey_log.finish(exit_station)
     end
 
     def not_tapping_out
-      @journey.penalty
-      @journey_list.push( @journey )
-      deduct
+      @journey_log.current_journey.penalty
+      end_journey(nil)
     end
     
     def not_tapping_in
-      @journey = @journey_class.new
-      @journey.penalty
+      @journey_log.start(nil)
+      @journey_log.current_journey.penalty
     end
 end
