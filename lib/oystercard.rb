@@ -9,9 +9,10 @@ class Oystercard
     UPPER_LIMIT = 90
     LOWER_LIMIT = 1
 
-    def initialize 
+    def initialize(journey = Journey) 
         @balance = 0
         @journey_list = []
+        @journey_class = journey
     end
 
     def top_up(value)
@@ -54,7 +55,7 @@ class Oystercard
     end
 
     def start_journey(entry_station)
-      @journey = Journey.new
+      @journey = @journey_class.new
       @journey.touch_in(entry_station)
     end
 
@@ -71,7 +72,7 @@ class Oystercard
     end
     
     def not_tapping_in
-      @journey = Journey.new
+      @journey = @journey_class.new
       @journey.penalty
     end
 end
