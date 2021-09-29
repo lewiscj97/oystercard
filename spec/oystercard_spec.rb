@@ -8,7 +8,7 @@ describe Oystercard do
   let(:journey_class) {double :journey_class, new: journey_double}
   let(:journey_log) {double :journey_log, "[]": journey}
 
-  before(:each) do
+  before(:each) do 
     @subject = Oystercard.new(journey_class, journey_log)
     allow(journey_double).to receive(:touch_in)
     allow(journey_double).to receive(:touch_out)
@@ -16,8 +16,6 @@ describe Oystercard do
     allow(journey_double).to receive(:exit_station) { wavertree }
     allow(journey_double).to receive(:fare) { 1 }
     allow(journey_double).to receive(:complete)
-
-    allow(journey_log).to receive(:current_journey) {journey}
     allow(journey_log).to receive(:start)
     allow(journey_log).to receive(:finish)
   end
@@ -40,12 +38,6 @@ describe Oystercard do
   end
 
   describe "#touch_in" do
-    it "sets the card status to active" do
-      @subject.top_up(5)
-      @subject.touch_in(lea_green)
-      expect(@subject.in_journey?).to eq true  
-    end
-
     it "doesn't let user touch in if balance is below £1" do
       expect { @subject.touch_in(lea_green) }.to raise_error "Must have minimum of £1 on card to travel"
     end
@@ -53,16 +45,19 @@ describe Oystercard do
 
   describe "#touch_out" do
     it "Will deduct the minimum fare when touched out" do
+      allow(journey_log).to receive(:current_journey)
       @subject.top_up(5)
       @subject.touch_in(lea_green)
+      allow(journey_log).to receive(:current_journey) {journey}
       expect { @subject.touch_out(wavertree) }.to change{@subject.balance}.by(-1)
     end
 
     it "will add a complete journey to list of journeys" do
+      allow(journey_log).to receive(:current_journey)
       @subject.top_up(5)
       @subject.touch_in(lea_green)
+      allow(journey_log).to receive(:current_journey) {journey}
       @subject.touch_out(wavertree)
-
       expect(@subject.journey_log[0].entry_station).to eq ( lea_green )
       expect(@subject.journey_log[0].exit_station).to eq ( wavertree )
     end

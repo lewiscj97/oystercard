@@ -8,7 +8,7 @@ class Journey
     attr_reader :fare
 
     def initialize()
-        @entry_station 
+        @entry_station = nil
         @exit_station
         @complete = false
         @fare = MINIMUM_FARE
@@ -20,7 +20,7 @@ class Journey
 
     def touch_out(exit_station)
         @exit_station = exit_station
-        @complete = true if !@entry_station.nil?
+        @complete = true if !@entry_station.nil? && !@exit_station.nil?
     end
 
     def penalty

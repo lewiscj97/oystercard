@@ -22,7 +22,7 @@ class Oystercard
     end
 
     def in_journey?
-      !@journey_log.current_journey.nil?
+      @journey_log.current_journey
     end
 
     def touch_in(entry_station)
